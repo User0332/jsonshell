@@ -1,22 +1,27 @@
 {
-    "hi": {
-        "over-here": {
-            "cool": [
-                {
-                    "inner": [
-                        {
-                            "another-object": {}
-                        }
-                    ]
-                },
-                "another element",
-                "third element"
-            ],
-            "nice": "hello"
-        },
-        "wow": 2,
-        "another-dir": {
-            "number": 2
-        }
-    }
+	"hi": {
+		"over-here": [
+			{
+				"code": "cool",
+				"inner-array": [
+					{
+						"attribute": 44,
+						"new-attr": null
+					}
+				]
+			},
+			{
+				"hi2": 34.1
+			},
+			"not-an-object!!"
+		],
+		"something-else": {
+			"inner-property": true
+		}
+	},
+	"another-property": 4,
+	"arr": [
+		2,
+		3
+	]
 }
