@@ -230,7 +230,7 @@ while 1:
 
 	if command == "exit":
 		with open(file, 'w') as f:
-			json.dump(obj, f)
+			json.dump(obj, f, indent=4)
 		
 		exit(0)
 
