@@ -1,4 +1,6 @@
 import os
+import dill
+import copy
 import anytree
 import argparse
 import json
@@ -23,7 +25,25 @@ current_obj = obj
 LOADED = [('/', obj)]
 
 class LSError(Exception): pass
+class JSONObject: # copied from `objverify`, don't want to have it as a dependency
+	def __init__(self, proto: dict):
+		for key, value in proto.items():
+			if type(value) is dict:
+				value = JSONObject(value)
 
+			if type(value) is list:
+				value = copy.deepcopy(value)
+				for i, val in enumerate(value):
+					if type(val) is dict: value[i] = JSONObject(val)
+
+			self.__dict__[key] = value
+
+	def __getitem__(self, item: str):
+		return self.__dict__.get(item)
+
+	def __repr__(self) -> str:
+		return json.dumps(self.__dict__)
+	
 def render(node: anytree.Node) -> str:
 	res = ""
 	for prefix, fill, node in anytree.RenderTree(node):
@@ -151,6 +171,9 @@ lenparser.add_argument("key", type=str, help="The key that points to the target 
 
 helpparser = argparse.ArgumentParser("help", description="help on commands")
 helpparser.add_argument("cmd", type=str, nargs='?', default=None, help="Optional specific command")
+
+pyserializeparser = argparse.ArgumentParser("pyserialze", description="serialize the current JSON object into a Python one and write it to the given file using `dill`")
+pyserializeparser.add_argument("file", type=str, default=None, help="Filename to write to")
 
 #just for help msg
 unloadparser = argparse.ArgumentParser("unload", description="unload an object off of the object stack and return to the place you were before loading")
@@ -381,6 +404,17 @@ while 1:
 
 		continue
 
+	if command == "pyserialize":
+		try: fname: str = pyserializeparser.parse_args(args).file
+		except SystemExit: continue
+		
+		try:
+			with open(fname, 'wb') as f:
+				dill.dump(JSONObject(current_obj), f)
+		except OSError as e: print(f"pyserialize: error: {e}")
+
+		continue
+
 	if command == "unload":
 		# just for help msg
 		try: unloadparser.parse_args(args)
@@ -413,7 +447,7 @@ while 1:
 			print(
 				"cd", "ls", "set", "resize", "get",
 				"clear", "help", "pwd", "exit", "load", "unload",
-				"del", "ins", "save", "len",
+				"del", "ins", "save", "len", "pyserialize",
 				sep='\n'
 			)
 

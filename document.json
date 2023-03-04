@@ -21,7 +21,9 @@
 	},
 	"another-property": 4,
 	"arr": [
+		1,
 		2,
-		3
+		3,
+		4
 	]
 }
