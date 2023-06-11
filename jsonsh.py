@@ -64,7 +64,7 @@ def recurse(name: str, obj: dict) -> anytree.Node:
 
 	return root
 
-def lsbase(args: list[str]) -> dict:
+def lsbase(args: list[str]) -> tuple[dict, str]:
 	from_top = args[0][0] == '/'
 	
 	temp_cwd = "" if from_top else cwd
@@ -126,7 +126,6 @@ def exec_cd(directory: str):
 
 def gettype(value) -> str:
 	return {dict: "object", list: "array", int: "number", float: "number", str: "string", bool: "boolean"}[type(value)]
-
 
 cdparser = argparse.ArgumentParser("cd", description="change the current object/directory")
 cdparser.add_argument("directory", type=str, help="The object/location to change directory to")
@@ -199,7 +198,6 @@ while 1:
 		except SystemExit: continue # make sure it doesn't exit
 
 		recursive, listkey = lsargs.recursive, lsargs.key	
-
 
 		if recursive:
 			if not listkey:
