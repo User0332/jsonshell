@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/jsonsh.py
+src/jsonsh_utils.py
+src/jsonshell.egg-info/PKG-INFO
+src/jsonshell.egg-info/SOURCES.txt
+src/jsonshell.egg-info/dependency_links.txt
+src/jsonshell.egg-info/entry_points.txt
+src/jsonshell.egg-info/requires.txt
+src/jsonshell.egg-info/top_level.txt

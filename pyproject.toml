@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "json.sh"
+name = "jsonshell"
 version = "1.0.0"
 description = "JSONShell, the easy way to navigate JSON objects in a shell-like environment"
 readme = "README.md"
@@ -12,8 +12,7 @@ license = { file = "LICENSE" }
 classifiers = []
 keywords = []
 dependencies = [
-    "anytree >= 2.8.0",
-    "dill => 0.3.6"
+    "anytree >= 2.8.0"
 ]
 requires-python = ">= 3.9"
 
@@ -21,5 +20,5 @@ requires-python = ">= 3.9"
 Homepage = "https://github.com/User0332/jsonshell"
 
 [project.scripts]
-jsonsh = "jsonsh"
-"json.sh" = "jsonsh"
+jsonsh = "jsonsh:main"
+"json.sh" = "jsonsh:main"

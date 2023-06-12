@@ -1,6 +1,6 @@
+from jsonsh_utils import LSError, JSONObject
 import os
-import dill
-import copy
+import pickle
 import anytree
 import argparse
 import json
@@ -23,26 +23,6 @@ cwd = ""
 current_obj = obj
 
 LOADED = [('/', obj)]
-
-class LSError(Exception): pass
-class JSONObject: # copied from `objverify`, don't want to have it as a dependency
-	def __init__(self, proto: dict):
-		for key, value in proto.items():
-			if type(value) is dict:
-				value = JSONObject(value)
-
-			if type(value) is list:
-				value = copy.deepcopy(value)
-				for i, val in enumerate(value):
-					if type(val) is dict: value[i] = JSONObject(val)
-
-			self.__dict__[key] = value
-
-	def __getitem__(self, item: str):
-		return self.__dict__.get(item)
-
-	def __repr__(self) -> str:
-		return json.dumps(self.__dict__)
 	
 def render(node: anytree.Node) -> str:
 	res = ""
@@ -171,7 +151,7 @@ lenparser.add_argument("key", type=str, help="The key that points to the target 
 helpparser = argparse.ArgumentParser("help", description="help on commands")
 helpparser.add_argument("cmd", type=str, nargs='?', default=None, help="Optional specific command")
 
-pyserializeparser = argparse.ArgumentParser("pyserialze", description="serialize the current JSON object into a Python one and write it to the given file using `dill`")
+pyserializeparser = argparse.ArgumentParser("pyserialze", description="serialize the current JSON object into a Python one and write it to the given file using `pickle`")
 pyserializeparser.add_argument("file", type=str, default=None, help="Filename to write to")
 
 #just for help msg
@@ -408,7 +388,7 @@ while 1:
 		
 		try:
 			with open(fname, 'wb') as f:
-				dill.dump(JSONObject(current_obj), f)
+				pickle.dump(JSONObject(current_obj), f)
 		except OSError as e: print(f"pyserialize: error: {e}")
 
 		continue
